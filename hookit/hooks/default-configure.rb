@@ -4,7 +4,9 @@ include Hooky::Memcached
 if payload[:platform] == 'local'
   maxmemory = 128
 else
-  maxmemory = payload[:member][:schema][:meta][:ram].to_i / 1024 / 1024
+  total_mem = `vmstat -s | grep 'total memory' | awk '{print $1}'`.to_i
+  cgroup_mem = `cat /sys/fs/cgroup/memory/memory.limit_in_bytes`.to_i
+  maxmemory = [ total_mem / 1024, cgroup_mem / 1024 / 1024 ].min
 end
 
 # Setup
