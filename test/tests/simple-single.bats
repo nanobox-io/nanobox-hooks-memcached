@@ -13,13 +13,13 @@ echo_lines() {
 }
 
 @test "Configure Local Container" {
-  run run_hook "simple-single-local" "default-configure" "$(payload default/configure-local)"
+  run run_hook "simple-single-local" "configure" "$(payload default/configure-local)"
   echo_lines
   [ "$status" -eq 0 ] 
 }
 
 @test "Start Local Memcached" {
-  run run_hook "simple-single-local" "default-start" "$(payload default/start)"
+  run run_hook "simple-single-local" "start" "$(payload default/start)"
   echo_lines
   [ "$status" -eq 0 ]
   # Verify
@@ -42,7 +42,7 @@ echo_lines() {
 }
 
 @test "Stop Local Memcached" {
-  run run_hook "simple-single-local" "default-stop" "$(payload default/stop)"
+  run run_hook "simple-single-local" "stop" "$(payload default/stop)"
   echo_lines
   [ "$status" -eq 0 ]
   while docker exec "simple-single-local" bash -c "ps aux | grep [m]emcached"
@@ -64,13 +64,13 @@ echo_lines() {
 }
 
 @test "Configure Production Container" {
-  run run_hook "simple-single-production" "default-configure" "$(payload default/configure-production)"
+  run run_hook "simple-single-production" "configure" "$(payload default/configure-production)"
   echo_lines
   [ "$status" -eq 0 ] 
 }
 
 @test "Start Production Memcached" {
-  run run_hook "simple-single-production" "default-start" "$(payload default/start)"
+  run run_hook "simple-single-production" "start" "$(payload default/start)"
   echo_lines
   [ "$status" -eq 0 ]
   # Verify
@@ -93,7 +93,7 @@ echo_lines() {
 }
 
 @test "Stop Production Memcached" {
-  run run_hook "simple-single-production" "default-stop" "$(payload default/stop)"
+  run run_hook "simple-single-production" "stop" "$(payload default/stop)"
   echo_lines
   [ "$status" -eq 0 ]
   while docker exec "simple-single-production" bash -c "ps aux | grep [m]emcached"
