@@ -7,15 +7,11 @@ require 'bundler/setup'
 # load hookit/setup to bootstrap hookit and import the dsl
 require 'hookit/setup'
 
-if payload[:member][:type] == 'default'
+service 'cache' do
+  action :disable
+  init :runit
+end
 
-  service 'cache' do
-    action :disable
-    init :runit
-  end
-
-  directory '/etc/service/cache' do
-    action :delete
-  end
-
+directory '/etc/service/cache' do
+  action :delete
 end

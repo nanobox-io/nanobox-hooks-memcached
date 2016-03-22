@@ -9,31 +9,30 @@ require 'hookit/setup'
 
 converged_boxfile = converge( Hooky::Memcached::BOXFILE_DEFAULTS, payload[:boxfile] )
 
-if payload[:member][:type] == 'default'
-  if payload[:platform] == 'local'
-    maxmemory = 128
-  else
-    total_mem = `vmstat -s | grep 'total memory' | awk '{print $1}'`.to_i
-    cgroup_mem = `cat /sys/fs/cgroup/memory/memory.limit_in_bytes`.to_i
-    maxmemory = [ total_mem / 1024, cgroup_mem / 1024 / 1024 ].min
-  end
+if payload[:platform] == 'local'
+  maxmemory = 128
+else
+  total_mem = `vmstat -s | grep 'total memory' | awk '{print $1}'`.to_i
+  cgroup_mem = `cat /sys/fs/cgroup/memory/memory.limit_in_bytes`.to_i
+  maxmemory = [ total_mem / 1024, cgroup_mem / 1024 / 1024 ].min
+end
 
-  # Import service (and start)
-  directory '/etc/service/cache' do
-    recursive true
-  end
+# Import service (and start)
+directory '/etc/service/cache' do
+  recursive true
+end
 
-  directory '/etc/service/cache/log' do
-    recursive true
-  end
+directory '/etc/service/cache/log' do
+  recursive true
+end
 
-  template '/etc/service/cache/log/run' do
-    mode 0755
-    source 'log-run.erb'
-    variables ({ svc: "cache" })
-  end
+template '/etc/service/cache/log/run' do
+  mode 0755
+  source 'log-run.erb'
+  variables ({ svc: "cache" })
+end
 
-  mem_exec = "/data/bin/memcached \
+mem_exec = "/data/bin/memcached \
 -m #{maxmemory} \
 -c #{converged_boxfile[:max_connections]} \
 -f #{converged_boxfile[:chunk_size_growth_factor]} \
@@ -44,18 +43,17 @@ if payload[:member][:type] == 'default'
    #{converged_boxfile[:return_error_on_memory_exhausted] ? '-M' : ''} \
    #{converged_boxfile[:disable_cas] ? '-C' : ''}"
 
-  template '/etc/service/cache/run' do
-    mode 0755
-    variables ({ exec: mem_exec })
-  end
+template '/etc/service/cache/run' do
+  mode 0755
+  variables ({ exec: mem_exec })
+end
 
-  service 'cache' do
-    action :enable
-    init :runit
-  end
+service 'cache' do
+  action :enable
+  init :runit
+end
 
-  ensure_socket 'cache' do
-    port '11211'
-    action :listening
-  end
+ensure_socket 'cache' do
+  port '11211'
+  action :listening
 end
