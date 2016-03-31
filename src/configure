@@ -10,7 +10,7 @@ require 'hookit/setup'
 include Hooky::Memcached
 
 # Setup
-converged_boxfile = converge( Hooky::Memcached::BOXFILE_DEFAULTS, payload[:boxfile] )
+converged_config = converge( Hooky::Memcached::CONFIG_DEFAULTS, payload[:config] )
 
 # Configure narc
 template '/opt/gonano/etc/narc.conf' do

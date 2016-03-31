@@ -4,9 +4,9 @@
   "config": {
   },
   "member": {
-    "local_ip": "192.168.0.2",
+    "local_ip": "192.168.0.4",
     "uid": "1",
-    "role": "primary"
+    "role": "default"
   },
   "ssh": {
     "admin_key": {

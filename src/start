@@ -7,7 +7,7 @@ require 'bundler/setup'
 # load hookit/setup to bootstrap hookit and import the dsl
 require 'hookit/setup'
 
-converged_boxfile = converge( Hooky::Memcached::BOXFILE_DEFAULTS, payload[:boxfile] )
+converged_config = converge( Hooky::Memcached::CONFIG_DEFAULTS, payload[:config] )
 
 if payload[:platform] == 'local'
   maxmemory = 128
@@ -34,14 +34,14 @@ end
 
 mem_exec = "/data/bin/memcached \
 -m #{maxmemory} \
--c #{converged_boxfile[:max_connections]} \
--f #{converged_boxfile[:chunk_size_growth_factor]} \
--n #{converged_boxfile[:minimum_allocated_space]} \
--R #{converged_boxfile[:maximum_requests_per_event]} \
--b #{converged_boxfile[:max_backlog]} \
--B #{converged_boxfile[:binding_protocol]} \
-   #{converged_boxfile[:return_error_on_memory_exhausted] ? '-M' : ''} \
-   #{converged_boxfile[:disable_cas] ? '-C' : ''}"
+-c #{converged_config[:max_connections]} \
+-f #{converged_config[:chunk_size_growth_factor]} \
+-n #{converged_config[:minimum_allocated_space]} \
+-R #{converged_config[:maximum_requests_per_event]} \
+-b #{converged_config[:max_backlog]} \
+-B #{converged_config[:binding_protocol]} \
+   #{converged_config[:return_error_on_memory_exhausted] ? '-M' : ''} \
+   #{converged_config[:disable_cas] ? '-C' : ''}"
 
 template '/etc/service/cache/run' do
   mode 0755
