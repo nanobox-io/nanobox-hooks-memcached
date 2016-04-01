@@ -3,8 +3,9 @@ module Hooky
 
     CONFIG_DEFAULTS = {
       # global settings
-      before_deploy:                {type: :array, of: :string, default: []},
-      after_deploy:                 {type: :array, of: :string, default: []},
+      before_deploy:                    {type: :array, of: :string, default: []},
+      after_deploy:                     {type: :array, of: :string, default: []},
+      hook_ref:                         {type: :string, default: "stable"},
 
       # memcached_settings
       return_error_on_memory_exhausted: {type: :on_off, default: false}, # -M            return error on memory exhausted (rather than removing items)
