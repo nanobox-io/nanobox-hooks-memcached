@@ -10,8 +10,10 @@ require 'hookit/setup'
 service 'cache' do
   action :disable
   init :runit
+  not_if { !Dir.exist?('/etc/service/cache') }
 end
 
 directory '/etc/service/cache' do
   action :delete
+  not_if { !Dir.exist?('/etc/service/cache') }
 end

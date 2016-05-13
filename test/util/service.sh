@@ -14,7 +14,7 @@ wait_for_listening() {
   container=$1
   ip=$2
   port=$3
-  until docker exec ${container} bash -c "nc ${ip} ${port} < /dev/null"
+  until docker exec ${container} bash -c "nc -q 1 ${ip} ${port} < /dev/null"
   do
     sleep 1
   done
@@ -41,7 +41,7 @@ insert_test_data() {
   port=$3
   key=$4
   data=$5
-  run docker exec ${container} bash -c "printf 'set ${key} 0 60 4\r\n${data}\r\n' | nc ${ip} ${port}"
+  run docker exec ${container} bash -c "printf 'set ${key} 0 60 4\r\n${data}\r\n' | nc -q 1 ${ip} ${port}"
 }
 
 verify_test_data() {
@@ -50,7 +50,7 @@ verify_test_data() {
   port=$3
   key=$4
   data=$5
-  run docker exec ${container} bash -c "printf 'get ${key}\r\n' | nc ${ip} ${port}"
+  run docker exec ${container} bash -c "printf 'get ${key}\r\n' | nc -q 1 ${ip} ${port}"
   data=$(echo -e "${data}\r")
   echo_lines
   [ "${lines[1]}" = "${data}" ]
