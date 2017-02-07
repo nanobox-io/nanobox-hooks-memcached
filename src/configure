@@ -10,7 +10,7 @@ require 'hookit/setup'
 include Hooky::Memcached
 
 # Setup
-converged_config = converge( Hooky::Memcached::CONFIG_DEFAULTS, payload[:config] )
+converged_config = converge( Hooky::Memcached::CONFIG_DEFAULTS, payload[:config] || {} )
 
 if payload[:logvac_host]
   # Configure narc

@@ -7,7 +7,7 @@ require 'bundler/setup'
 # load hookit/setup to bootstrap hookit and import the dsl
 require 'hookit/setup'
 
-converged_config = converge( Hooky::Memcached::CONFIG_DEFAULTS, payload[:config] )
+converged_config = converge( Hooky::Memcached::CONFIG_DEFAULTS, payload[:config] || {} )
 
 if payload[:platform] == 'local'
   maxmemory = 128
