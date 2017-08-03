@@ -41,7 +41,8 @@ Vagrant.configure(2) do |config|
   # pull the build image to run tests in
   config.vm.provision "shell", inline: <<-SCRIPT
     echo "Pulling the build image"
-    docker pull nanobox/memcached:1.4
+    docker pull nanobox/memcached:1.4 || (docker pull nanobox/memcached:1.4-beta; docker tag nanobox/memcached:1.4-beta nanobox/memcached:1.4)
+    docker pull nanobox/memcached:1.5 || (docker pull nanobox/memcached:1.5-beta; docker tag nanobox/memcached:1.5-beta nanobox/memcached:1.5)
   SCRIPT
 
   # create an adhoc network
