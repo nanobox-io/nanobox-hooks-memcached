@@ -15,6 +15,7 @@ module Hooky
       maximum_requests_per_event:       {type: :integer, default: 20}, # -R            Maximum number of requests per event, limits the number of requests process for a given connection to prevent starvation (default: 20)
       disable_cas:                      {type: :on_off, default: false}, # -C            Disable use of CAS
       max_backlog:                      {type: :integer, default: 1024}, # -b            Set the backlog queue limit (default: 1024)
+      max_item_size:                    {type: :byte, default: '1m'}, # -I            adjusts max item size (default: 1mb, min: 1k, max: 128m)
       binding_protocol:                 {type: :string, default: 'auto', from: ['ascii', 'binary', 'auto']} # -B            Binding protocol - one of ascii, binary, or auto (default)
     }
 
