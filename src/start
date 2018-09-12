@@ -40,6 +40,7 @@ mem_exec = "/data/bin/memcached \
 -R #{converged_config[:maximum_requests_per_event]} \
 -b #{converged_config[:max_backlog]} \
 -B #{converged_config[:binding_protocol]} \
+-I #{converged_config[:max_item_size]} \
    #{converged_config[:return_error_on_memory_exhausted] ? '-M' : ''} \
    #{converged_config[:disable_cas] ? '-C' : ''}"
 
